@@ -8,9 +8,11 @@
   <ItemGroup>
     <None Remove="views\" />
     <None Remove="model\" />
+    <None Remove="utils\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="screen\" />
     <Folder Include="model\" />
+    <Folder Include="utils\" />
   </ItemGroup>
 </Project>

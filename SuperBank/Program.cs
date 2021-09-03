@@ -8,6 +8,7 @@ namespace SuperBank
         static void Main(string[] args)
         {
             Login loginMenu = new Login();
+            Console.Clear();
             loginMenu.ShowLoginScreen();
         }
     }

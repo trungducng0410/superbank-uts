@@ -3,14 +3,18 @@ namespace SuperBank.screen
 {
     public class MainMenu
     {
+        private Login login;
+        private CreateAccount createAccount;
 
         private int inputCurorX;
         private int inputCurorY;
         private int errorCursorX;
         private int errorCursorY;
 
-        public MainMenu()
+        public MainMenu(Login login)
         {
+            this.login = login;
+            createAccount = new CreateAccount(this);
         }
 
         public void ShowMainMenu()
@@ -29,12 +33,12 @@ namespace SuperBank.screen
             Console.WriteLine("\t\t==================================================");
             Console.Write("\t\t|\t Enter your choice (1-7): ");
             inputCurorX = Console.CursorLeft;
-            inputCurorY = Console.CursorTop - 1;
+            inputCurorY = Console.CursorTop;
             Console.WriteLine("\t\t |");
             Console.WriteLine("\t\t==================================================");
             Console.WriteLine("\n");
             Console.Write("\t\t");
-            errorCursorY = Console.CursorTop - 1;
+            errorCursorY = Console.CursorTop;
             errorCursorX = Console.CursorLeft;
 
             Console.SetCursorPosition(inputCurorX, inputCurorY);
@@ -44,7 +48,54 @@ namespace SuperBank.screen
 
         private void ValidateChoice(string choice)
         {
-            Console.WriteLine("Valid choice");
+            try
+            {
+                int select = Convert.ToInt32(choice);
+
+                switch (select)
+                {
+                    case 1:
+                        createAccount.ShowInterface();
+                        break;
+                    case 2:
+                        Console.WriteLine("Search");
+                        break;
+                    case 3:
+                        Console.WriteLine("Deposit");
+                        break;
+                    case 4:
+                        Console.WriteLine("Withdraw");
+                        break;
+                    case 5:
+                        Console.WriteLine("A/C statement");
+                        break;
+                    case 6:
+                        Console.WriteLine("Delete account");
+                        break;
+                    case 7:
+                        Exit();
+                        break;
+                    default:
+                        PrintErrorMessage();
+                        break;
+                }
+            } catch (Exception)
+            {
+                PrintErrorMessage();
+            }
+        }
+
+        private void PrintErrorMessage()
+        {
+            Console.SetCursorPosition(errorCursorX, errorCursorY);
+            Console.WriteLine("Please enter number from 1 to 7.");
+            Console.ReadKey();
+            ShowMainMenu();
+        }
+
+        private void Exit()
+        {
+            login.ShowLoginScreen();
         }
     }
 }

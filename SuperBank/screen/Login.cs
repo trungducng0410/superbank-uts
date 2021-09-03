@@ -7,6 +7,7 @@ namespace SuperBank.screen
     public class Login
     {
         private MainMenu mainMenu;
+
         private string usernameInput;
         private string passwordInput;
 
@@ -21,7 +22,7 @@ namespace SuperBank.screen
         {
             usernameInput = null;
             passwordInput = null;
-            mainMenu = new MainMenu();
+            mainMenu = new MainMenu(this);
         }
 
         public void ShowLoginScreen()
@@ -33,17 +34,17 @@ namespace SuperBank.screen
             Console.WriteLine("\t\t|                LOGIN TO START                  |");
             Console.WriteLine("\t\t|                                                |");
             Console.Write("\t\t|\t Username: ");
-            userNameCursorY = Console.CursorTop - 1;
+            userNameCursorY = Console.CursorTop;
             userNameCursorX = Console.CursorLeft;
             Console.WriteLine("\t\t\t\t |");
             Console.Write("\t\t|\t Password: ");
-            passwordCursorY = Console.CursorTop - 1; // Y value in the next line
+            passwordCursorY = Console.CursorTop;
             passwordCursorX = Console.CursorLeft;
             Console.WriteLine("\t\t\t\t |");
             Console.WriteLine("\t\t==================================================");
             Console.WriteLine("\n");
             Console.Write("\t\t");
-            errorCursorY = Console.CursorTop - 1;
+            errorCursorY = Console.CursorTop;
             errorCursorX = Console.CursorLeft;
 
             Console.SetCursorPosition(userNameCursorX, userNameCursorY);
@@ -63,6 +64,7 @@ namespace SuperBank.screen
                 var keyInfo = Console.ReadKey(intercept: true);
                 key = keyInfo.Key;
 
+                // Backspace remove * and last character in password variable
                 if (key == ConsoleKey.Backspace && tmpPwd.Length > 0)
                 {
                     Console.Write("\b \b");
@@ -81,29 +83,40 @@ namespace SuperBank.screen
         private void AttemptLogin()
         {
             List<User> users = GetUsers();
+            bool notFound = true;
             foreach (User user in users)
             {
                 if (user.GetUsername().Equals(usernameInput))
                 {
+                    notFound = false;
                     if (!user.Validate(usernameInput, passwordInput))
                     {
-                        Console.SetCursorPosition(errorCursorX, errorCursorY);
-                        Console.WriteLine("Invalid credentials!... Please enter");
-                        if (Console.ReadKey().Key == ConsoleKey.Enter)
-                        {
-                            usernameInput = null;
-                            passwordInput = null;
-                            ShowLoginScreen();
-                        }
+                        PrintErrorMessage("Invalid credentials");
                     } else
                     {
                         Console.SetCursorPosition(errorCursorX, errorCursorY);
                         Console.WriteLine("Valid credentials!... Please enter");
                         Console.ReadKey();
-                        Console.Clear();
                         mainMenu.ShowMainMenu();
                     }
                 }
+            }
+
+            if (notFound)
+            {
+                PrintErrorMessage("User not found");
+            }
+        }
+
+        private void PrintErrorMessage(string message)
+        {
+            Console.SetCursorPosition(errorCursorX, errorCursorY);
+            Console.WriteLine($"{message}!... Please enter");
+            if (Console.ReadKey().Key == ConsoleKey.Enter)
+            {
+                usernameInput = null;
+                passwordInput = null;
+                ShowLoginScreen();
             }
         }
 
