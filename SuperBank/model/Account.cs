@@ -38,6 +38,11 @@ namespace SuperBank.model
             this.email = email;
         }
 
+        public string GetAccountNumber()
+        {
+            return Convert.ToString(id);
+        }
+
         public string GetEmail()
         {
             return email;

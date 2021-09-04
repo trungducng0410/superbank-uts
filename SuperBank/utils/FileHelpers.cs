@@ -13,5 +13,11 @@ namespace SuperBank.utils
             string sFilePath = sFolderPath + $"{accountNumber}.txt";
             return sFilePath;
         }
+
+        public static void DeleteFile(string accountNumber)
+        {
+            string path = GetAccountFilePath(accountNumber);
+            File.Delete(path);
+        }
     }
 }

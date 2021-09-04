@@ -4,12 +4,13 @@ namespace SuperBank.screen
 {
     public class MainMenu
     {
-        private Login login;
-        private CreateAccount createAccount;
-        private SearchAccount searchAccount;
-        private Deposit deposit;
-        private Withdraw withdraw;
-        private Statement statement;
+        private readonly Login login;
+        private readonly CreateAccount createAccount;
+        private readonly SearchAccount searchAccount;
+        private readonly Deposit deposit;
+        private readonly Withdraw withdraw;
+        private readonly Statement statement;
+        private readonly Delete delete;
 
         private Cursor inputCursor;
         private Cursor errorCursor;
@@ -22,6 +23,7 @@ namespace SuperBank.screen
             deposit = new Deposit(this);
             withdraw = new Withdraw(this);
             statement = new Statement(this);
+            delete = new Delete(this);
         }
 
         public void ShowMainMenu()
@@ -75,7 +77,7 @@ namespace SuperBank.screen
                         statement.ShowInterface();
                         break;
                     case 6:
-                        Console.WriteLine("Delete account");
+                        delete.ShowInterface();
                         break;
                     case 7:
                         Exit();
