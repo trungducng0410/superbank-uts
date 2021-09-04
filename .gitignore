@@ -12,7 +12,7 @@ tarballs/
 test-results/
 
 # Data
-SuperBank/data/accounts/
+SuperBank/data/accounts/*.txt
 
 # Mac bundle stuff
 *.dmg

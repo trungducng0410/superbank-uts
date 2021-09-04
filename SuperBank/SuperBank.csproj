@@ -9,10 +9,12 @@
     <None Remove="views\" />
     <None Remove="model\" />
     <None Remove="utils\" />
+    <None Remove="data\accounts\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="screen\" />
     <Folder Include="model\" />
     <Folder Include="utils\" />
+    <Folder Include="data\accounts\" />
   </ItemGroup>
 </Project>
