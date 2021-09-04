@@ -11,12 +11,9 @@ namespace SuperBank.screen
         private string usernameInput;
         private string passwordInput;
 
-        private int userNameCursorY;
-        private int userNameCursorX;
-        private int passwordCursorY;
-        private int passwordCursorX;
-        private int errorCursorY;
-        private int errorCursorX;
+        private Cursor usernameCursor;
+        private Cursor passwordCursor;
+        private Cursor errorCursor;
 
         public Login()
         {
@@ -34,20 +31,17 @@ namespace SuperBank.screen
             Console.WriteLine("\t\t|                LOGIN TO START                  |");
             Console.WriteLine("\t\t|                                                |");
             Console.Write("\t\t|\t Username: ");
-            userNameCursorY = Console.CursorTop;
-            userNameCursorX = Console.CursorLeft;
+            usernameCursor = new Cursor();
             Console.WriteLine("\t\t\t\t |");
             Console.Write("\t\t|\t Password: ");
-            passwordCursorY = Console.CursorTop;
-            passwordCursorX = Console.CursorLeft;
+            passwordCursor = new Cursor();
             Console.WriteLine("\t\t\t\t |");
             Console.WriteLine("\t\t==================================================");
             Console.WriteLine("\n");
             Console.Write("\t\t");
-            errorCursorY = Console.CursorTop;
-            errorCursorX = Console.CursorLeft;
+            errorCursor = new Cursor();
 
-            Console.SetCursorPosition(userNameCursorX, userNameCursorY);
+            Console.SetCursorPosition(usernameCursor.x, usernameCursor.y);
             usernameInput = Console.ReadLine();
             passwordInput = ReadPassword();
 
@@ -58,7 +52,7 @@ namespace SuperBank.screen
         {
             string tmpPwd = null;
             ConsoleKey key;
-            Console.SetCursorPosition(passwordCursorX, passwordCursorY);
+            Console.SetCursorPosition(passwordCursor.x, passwordCursor.y);
             do
             {
                 var keyInfo = Console.ReadKey(intercept: true);
@@ -94,7 +88,7 @@ namespace SuperBank.screen
                         PrintErrorMessage("Invalid credentials");
                     } else
                     {
-                        Console.SetCursorPosition(errorCursorX, errorCursorY);
+                        Console.SetCursorPosition(errorCursor.x, errorCursor.y);
                         Console.WriteLine("Valid credentials!... Please enter");
                         Console.ReadKey();
                         mainMenu.ShowMainMenu();
@@ -110,7 +104,7 @@ namespace SuperBank.screen
 
         private void PrintErrorMessage(string message)
         {
-            Console.SetCursorPosition(errorCursorX, errorCursorY);
+            Console.SetCursorPosition(errorCursor.x, errorCursor.y);
             Console.WriteLine($"{message}!... Please enter");
             if (Console.ReadKey().Key == ConsoleKey.Enter)
             {

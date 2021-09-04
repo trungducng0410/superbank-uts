@@ -11,6 +11,9 @@ autom4te.cache/
 tarballs/
 test-results/
 
+# Data
+SuperBank/data/accounts/
+
 # Mac bundle stuff
 *.dmg
 *.app

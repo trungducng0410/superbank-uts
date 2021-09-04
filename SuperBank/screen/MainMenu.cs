@@ -1,4 +1,5 @@
 ﻿using System;
+using SuperBank.model;
 namespace SuperBank.screen
 {
     public class MainMenu
@@ -6,10 +7,8 @@ namespace SuperBank.screen
         private Login login;
         private CreateAccount createAccount;
 
-        private int inputCurorX;
-        private int inputCurorY;
-        private int errorCursorX;
-        private int errorCursorY;
+        private Cursor inputCursor;
+        private Cursor errorCursor;
 
         public MainMenu(Login login)
         {
@@ -32,16 +31,14 @@ namespace SuperBank.screen
             Console.WriteLine("\t\t|    7. Exit                                     |");
             Console.WriteLine("\t\t==================================================");
             Console.Write("\t\t|\t Enter your choice (1-7): ");
-            inputCurorX = Console.CursorLeft;
-            inputCurorY = Console.CursorTop;
+            inputCursor = new Cursor();
             Console.WriteLine("\t\t |");
             Console.WriteLine("\t\t==================================================");
             Console.WriteLine("\n");
             Console.Write("\t\t");
-            errorCursorY = Console.CursorTop;
-            errorCursorX = Console.CursorLeft;
+            errorCursor = new Cursor();
 
-            Console.SetCursorPosition(inputCurorX, inputCurorY);
+            Console.SetCursorPosition(inputCursor.x, inputCursor.y);
             string choice = Console.ReadLine();
             ValidateChoice(choice);
         }
@@ -87,7 +84,7 @@ namespace SuperBank.screen
 
         private void PrintErrorMessage()
         {
-            Console.SetCursorPosition(errorCursorX, errorCursorY);
+            Console.SetCursorPosition(errorCursor.x, errorCursor.y);
             Console.WriteLine("Please enter number from 1 to 7.");
             Console.ReadKey();
             ShowMainMenu();
