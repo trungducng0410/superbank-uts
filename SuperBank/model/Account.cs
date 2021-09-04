@@ -38,6 +38,11 @@ namespace SuperBank.model
             this.email = email;
         }
 
+        public string GetEmail()
+        {
+            return email;
+        }
+
         public Transaction Deposit(int amount)
         {
             DateTime date = DateTime.Today;
@@ -54,7 +59,8 @@ namespace SuperBank.model
             if (balance < amount)
             {
                 throw new Exception();
-            } else
+            }
+            else
             {
                 DateTime date = DateTime.Today;
                 string action = "WITHDRAW";
@@ -64,7 +70,7 @@ namespace SuperBank.model
                 UpdateAccount();
                 return newTrans;
             }
-             
+
         }
 
         public int SaveNewAccount()
@@ -151,7 +157,21 @@ namespace SuperBank.model
 
         public string GetMailContent()
         {
-            return $"Account Statement\n\nAccountNo: {id}\nFirst Name: {firstName}\nLast Name: {lastName}\nAddress: {address}\nPhone: {phone}\nEmail: {email}\nBalance: {balance} USD\n";
+            return $"Account Information\n\nAccountNo: {id}\nFirst Name: {firstName}\nLast Name: {lastName}\nAddress: {address}\nPhone: {phone}\nEmail: {email}\nBalance: {balance} USD\n";
+        }
+
+        public string GetHistoryContent()
+        {
+            string tmp = "Account Statement\n\nDate\t\tType\t\tAmount\tRemain\n";
+            foreach (Transaction trans in history)
+            {
+                string sDateTime = trans.date.ToString("d");
+                string extraTab = "";
+                if (trans.action == "DEPOSIT")
+                    extraTab = "\t";
+                tmp += $"{sDateTime}\t{trans.action}\t{extraTab}{trans.amount}\t{trans.remainAmount}\n";
+            }
+            return tmp;
         }
 
         public void PrintToConsole()
@@ -178,6 +198,27 @@ namespace SuperBank.model
             UIHelpers.PrintRemainSpace(new Cursor());
             Console.Write($"\t\t|    Balance: {sBalance}");
             UIHelpers.PrintRemainSpace(new Cursor());
+            Console.WriteLine("\t\t==================================================");
+        }
+
+        public void PrintHistoryToConsole()
+        {
+            Console.WriteLine("\t\tLast 5 Transactions: ");
+            Console.WriteLine("\t\t==================================================");
+            Console.WriteLine("\t\t|                    HISTORY                     |");
+            Console.WriteLine("\t\t==================================================");
+            Console.WriteLine("\t\t|Date\t\tType\t\tAmount\tRemain\t |");
+            Console.WriteLine("\t\t--------------------------------------------------");
+
+            foreach (Transaction trans in history)
+            {
+                string sDateTime = trans.date.ToString("d");
+                string extraTab = "";
+                if (trans.action == "DEPOSIT")
+                    extraTab = "\t";
+                Console.WriteLine($"\t\t|{sDateTime}\t{trans.action}\t{extraTab}{trans.amount}\t{trans.remainAmount}\t |");
+            }
+
             Console.WriteLine("\t\t==================================================");
         }
     }

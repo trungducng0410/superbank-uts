@@ -5,17 +5,17 @@ namespace SuperBank.screen
 {
     public class SearchAccount
     {
-        private MainMenu mainMenu;
+        protected MainMenu mainMenu;
 
-        private Cursor inputCuror;
-        private Cursor errorCursor;
+        protected Cursor inputCuror;
+        protected Cursor errorCursor;
 
         public SearchAccount(MainMenu mainMenu)
         {
             this.mainMenu = mainMenu;
         }
 
-        public void ShowInterface()
+        public virtual void ShowInterface()
         {
             Console.Clear();
             Console.WriteLine("\t\t==================================================");
@@ -32,7 +32,7 @@ namespace SuperBank.screen
             GetInput();
         }
 
-        private void GetInput()
+        protected void GetInput()
         {
             Console.SetCursorPosition(inputCuror.x, inputCuror.y);
             string accountNumber = Console.ReadLine();
@@ -49,7 +49,7 @@ namespace SuperBank.screen
             Search(accountNumber);
         }
 
-        private void Search(string accountNumber)
+        protected virtual void Search(string accountNumber)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace SuperBank.screen
             }
         }
 
-        private void ContinueToSearch()
+        protected void ContinueToSearch()
         {
             Console.Write("Check another account (y - default/n)? ");
             string choice = Console.ReadLine();

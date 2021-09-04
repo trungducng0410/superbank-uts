@@ -3,29 +3,20 @@ using SuperBank.model;
 using SuperBank.utils;
 namespace SuperBank.screen
 {
-    public class Withdraw
+    public class Withdraw : Deposit
     {
-        private MainMenu mainMenu;
-
-        private Account account;
-        private string accountInput;
-
-        private Cursor accountCursor;
-        private Cursor amountCursor;
-        private Cursor errorCursor;
-
-        public Withdraw(MainMenu mainMenu)
+        public Withdraw(MainMenu mainMenu) : base(mainMenu)
         {
             this.mainMenu = mainMenu;
         }
 
-        public void ShowInterface()
+        public override void ShowInterface()
         {
             Console.Clear();
             Console.WriteLine("\t\t==================================================");
-            Console.WriteLine("\t\t|                     WITHDRAW                   |");
+            Console.WriteLine("\t\t|                    WITHDRAW                    |");
             Console.WriteLine("\t\t==================================================");
-            Console.WriteLine("\t\t|                 ENTER THE DETAILS              |");
+            Console.WriteLine("\t\t|                ENTER THE DETAILS               |");
             Console.WriteLine("\t\t|                                                |");
             Console.Write("\t\t|    Account Number: ");
             accountCursor = new Cursor();
@@ -46,36 +37,8 @@ namespace SuperBank.screen
             GetInput();
         }
 
-        private void GetInput()
+        protected override void GetAmount()
         {
-            if (accountInput == null)
-            {
-                Console.SetCursorPosition(accountCursor.x, accountCursor.y);
-                accountInput = Console.ReadLine();
-                if (!int.TryParse(accountInput, out _) || accountInput.Length > 10)
-                {
-                    Console.SetCursorPosition(errorCursor.x, errorCursor.y);
-                    Console.WriteLine("The account number must be integer or not more than 10 characters... Press enter");
-                    if (Console.ReadKey().Key == ConsoleKey.Enter)
-                    {
-                        accountInput = null;
-                        ShowInterface();
-                    }
-                }
-
-                Console.SetCursorPosition(errorCursor.x, errorCursor.y);
-                try
-                {
-                    account = AccountService.SearchAccountByAccountNumber(accountInput);
-                    Console.WriteLine("Account found! Enter the amount");
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Account not found!");
-                    Retry();
-                }
-            }
-
             Console.SetCursorPosition(amountCursor.x, amountCursor.y);
             string sAmount = Console.ReadLine();
             Console.SetCursorPosition(errorCursor.x, errorCursor.y + 1);
@@ -107,22 +70,6 @@ namespace SuperBank.screen
                         ShowInterface();
                     }
                 }
-
-            }
-        }
-
-        private void Retry()
-        {
-            Console.Write("Retry (y - default/n)? ");
-            accountInput = null;
-            string choice = Console.ReadLine();
-            if (choice.Equals("n"))
-            {
-                mainMenu.ShowMainMenu();
-            }
-            else
-            {
-                ShowInterface();
             }
         }
     }

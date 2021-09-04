@@ -9,6 +9,7 @@ namespace SuperBank.screen
         private SearchAccount searchAccount;
         private Deposit deposit;
         private Withdraw withdraw;
+        private Statement statement;
 
         private Cursor inputCursor;
         private Cursor errorCursor;
@@ -20,6 +21,7 @@ namespace SuperBank.screen
             searchAccount = new SearchAccount(this);
             deposit = new Deposit(this);
             withdraw = new Withdraw(this);
+            statement = new Statement(this);
         }
 
         public void ShowMainMenu()
@@ -70,7 +72,7 @@ namespace SuperBank.screen
                         withdraw.ShowInterface();
                         break;
                     case 5:
-                        Console.WriteLine("A/C statement");
+                        statement.ShowInterface();
                         break;
                     case 6:
                         Console.WriteLine("Delete account");
