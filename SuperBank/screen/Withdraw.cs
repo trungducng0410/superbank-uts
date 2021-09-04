@@ -3,7 +3,7 @@ using SuperBank.model;
 using SuperBank.utils;
 namespace SuperBank.screen
 {
-    public class Deposit
+    public class Withdraw
     {
         private MainMenu mainMenu;
 
@@ -14,7 +14,7 @@ namespace SuperBank.screen
         private Cursor amountCursor;
         private Cursor errorCursor;
 
-        public Deposit(MainMenu mainMenu)
+        public Withdraw(MainMenu mainMenu)
         {
             this.mainMenu = mainMenu;
         }
@@ -23,9 +23,9 @@ namespace SuperBank.screen
         {
             Console.Clear();
             Console.WriteLine("\t\t==================================================");
-            Console.WriteLine("\t\t|                     DEPOSIT                    |");
+            Console.WriteLine("\t\t|                     WITHDRAW                   |");
             Console.WriteLine("\t\t==================================================");
-            Console.WriteLine("\t\t|                ENTER THE DETAILS               |");
+            Console.WriteLine("\t\t|                 ENTER THE DETAILS              |");
             Console.WriteLine("\t\t|                                                |");
             Console.Write("\t\t|    Account Number: ");
             accountCursor = new Cursor();
@@ -79,7 +79,7 @@ namespace SuperBank.screen
             Console.SetCursorPosition(amountCursor.x, amountCursor.y);
             string sAmount = Console.ReadLine();
             Console.SetCursorPosition(errorCursor.x, errorCursor.y + 1);
-            if (!int.TryParse(sAmount, out int amount) || amount < 0)
+            if (!int.TryParse(sAmount, out int amount) || amount <= 0)
             {
                 Console.WriteLine("Invalid amount... Press enter");
                 if (Console.ReadKey().Key == ConsoleKey.Enter)
@@ -89,13 +89,25 @@ namespace SuperBank.screen
             }
             else
             {
-                account.Deposit(amount);
-                Console.WriteLine("Deposit successful! Go back to main menu... Press enter");
-                if (Console.ReadKey().Key == ConsoleKey.Enter)
+                try
                 {
-                    accountInput = null;
-                    mainMenu.ShowMainMenu();
+                    account.Withdraw(amount);
+                    Console.WriteLine("Withdraw successful! Go back to main menu... Press enter");
+                    if (Console.ReadKey().Key == ConsoleKey.Enter)
+                    {
+                        accountInput = null;
+                        mainMenu.ShowMainMenu();
+                    }
                 }
+                catch (Exception)
+                {
+                    Console.WriteLine("Your balance is not enough to withdraw... Try smaller amount");
+                    if (Console.ReadKey().Key == ConsoleKey.Enter)
+                    {
+                        ShowInterface();
+                    }
+                }
+
             }
         }
 

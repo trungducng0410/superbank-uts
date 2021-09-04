@@ -49,6 +49,24 @@ namespace SuperBank.model
             return newTrans;
         }
 
+        public Transaction Withdraw(int amount)
+        {
+            if (balance < amount)
+            {
+                throw new Exception();
+            } else
+            {
+                DateTime date = DateTime.Today;
+                string action = "WITHDRAW";
+                balance -= amount;
+                Transaction newTrans = new Transaction(date, action, amount, balance);
+                history.Add(newTrans);
+                UpdateAccount();
+                return newTrans;
+            }
+             
+        }
+
         public int SaveNewAccount()
         {
             Random rnd = new Random();
