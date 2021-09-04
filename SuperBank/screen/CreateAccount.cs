@@ -5,9 +5,6 @@ namespace SuperBank.screen
 {
     public class CreateAccount
     {
-        // 2 tab + 50 character "="
-        public const int SCREEN_WIDTH = 66;
-
         private MainMenu mainMenu;
 
         private Account account;
@@ -44,7 +41,7 @@ namespace SuperBank.screen
             if (firstNameInput != null)
             {
                 Console.Write(firstNameInput);
-                PrintRemainSpace(firstNameInput, firstNameCursor);
+                UIHelpers.PrintRemainSpace(new Cursor());
             }
             else
             {
@@ -56,7 +53,7 @@ namespace SuperBank.screen
             if (lastNameInput != null)
             {
                 Console.Write(lastNameInput);
-                PrintRemainSpace(lastNameInput, lastNameCursor);
+                UIHelpers.PrintRemainSpace(new Cursor());
             }
             else
             {
@@ -69,7 +66,7 @@ namespace SuperBank.screen
             if (addressInput != null)
             {
                 Console.Write(addressInput);
-                PrintRemainSpace(addressInput, addressCursor);
+                UIHelpers.PrintRemainSpace(new Cursor());
             }
             else
             {
@@ -81,7 +78,7 @@ namespace SuperBank.screen
             if (phoneInput != null)
             {
                 Console.Write(phoneInput);
-                PrintRemainSpace(phoneInput, phoneCursor);
+                UIHelpers.PrintRemainSpace(new Cursor());
             }
             else
             {
@@ -93,7 +90,7 @@ namespace SuperBank.screen
             if (emailInput != null)
             {
                 Console.Write(emailInput);
-                PrintRemainSpace(emailInput, emailCursor);
+                UIHelpers.PrintRemainSpace(new Cursor());
             }
             else
             {
@@ -204,15 +201,6 @@ namespace SuperBank.screen
                     mainMenu.ShowMainMenu();
                 }
             }
-        }
-
-        private void PrintRemainSpace(string s, Cursor cursor)
-        {
-            for (int i = 0; i < SCREEN_WIDTH - s.Length - cursor.x - 1; i++)
-            {
-                Console.Write(" ");
-            }
-            Console.WriteLine("|");
         }
 
         private void ShowErrorAndResetField(string message, ref string field)

@@ -6,6 +6,7 @@ namespace SuperBank.screen
     {
         private Login login;
         private CreateAccount createAccount;
+        private SearchAccount searchAccount;
 
         private Cursor inputCursor;
         private Cursor errorCursor;
@@ -14,6 +15,7 @@ namespace SuperBank.screen
         {
             this.login = login;
             createAccount = new CreateAccount(this);
+            searchAccount = new SearchAccount(this);
         }
 
         public void ShowMainMenu()
@@ -55,7 +57,7 @@ namespace SuperBank.screen
                         createAccount.ShowInterface();
                         break;
                     case 2:
-                        Console.WriteLine("Search");
+                        searchAccount.ShowInterface();
                         break;
                     case 3:
                         Console.WriteLine("Deposit");

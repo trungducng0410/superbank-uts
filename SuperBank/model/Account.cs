@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-
+using SuperBank.utils;
 namespace SuperBank.model
 {
     public class Account
@@ -13,6 +13,19 @@ namespace SuperBank.model
         private string email;
         private double balance;
 
+        public Account() { }
+
+        public Account(string id, string firstName, string lastName, string address, string phone, string email, string balance)
+        {
+            this.id = Convert.ToInt32(id);
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.address = address;
+            this.phone = Convert.ToInt32(phone);
+            this.email = email;
+            this.balance = Convert.ToDouble(balance);
+        }
+
         public Account(string firstName, string lastName, string address, string phone, string email)
         {
             this.firstName = firstName;
@@ -20,7 +33,6 @@ namespace SuperBank.model
             this.address = address;
             this.phone = Convert.ToInt32(phone);
             this.email = email;
-            this.balance = 0.0;
         }
 
         public string GetFirstName()
@@ -89,17 +101,15 @@ namespace SuperBank.model
             int accountNumber = rnd.Next(100000, 99999999);
             try
             {
-                string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                string sFolder = Path.Combine(sCurrentDirectory, @"../../../data/accounts");
-                string sFolderPath = Path.GetFullPath(sFolder);
-                string sFilePath = sFolderPath + $"/{accountNumber}.txt";
+                string path = FileHelpers.GetAccountFilePath(Convert.ToString(accountNumber));
 
-                if (File.Exists(sFilePath))
+                if (File.Exists(path))
                 {
                     SaveOnDisk();
                 }
                 id = accountNumber;
-                WriteToFile(sFilePath);
+                balance = 0.0;
+                WriteToFile(path);
             }
             catch (Exception e)
             {
@@ -115,14 +125,15 @@ namespace SuperBank.model
             {
                 StreamWriter streamwriter = new StreamWriter(path);
                 streamwriter.WriteLine($"AccountNo|{id}");
-                streamwriter.WriteLine($"First Name|{firstName}");
-                streamwriter.WriteLine($"Last Name|{lastName}");
+                streamwriter.WriteLine($"FirstName|{firstName}");
+                streamwriter.WriteLine($"LastName|{lastName}");
                 streamwriter.WriteLine($"Address|{address}");
                 streamwriter.WriteLine($"Phone|{phone}");
                 streamwriter.WriteLine($"Email|{email}");
                 streamwriter.WriteLine($"Balance|{balance}");
                 streamwriter.Close();
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 Console.WriteLine("Fail to write to file");
             }
@@ -131,6 +142,33 @@ namespace SuperBank.model
         public string GetMailContent()
         {
             return $"Account Statement\n\nAccountNo: {id}\nFirst Name: {firstName}\nLast Name: {lastName}\nAddress: {address}\nPhone: {phone}\nEmail: {email}\nBalance: {balance} USD\n";
+        }
+
+        public void PrintToConsole()
+        {
+            string sID = Convert.ToString(id);
+            string sPhone = Convert.ToString(phone);
+            string sBalance = Convert.ToString(balance);
+
+            Console.WriteLine("\t\t==================================================");
+            Console.WriteLine("\t\t|                ACCOUNT DETAILS                 |");
+            Console.WriteLine("\t\t==================================================");
+            Console.WriteLine("\t\t|                                                |");
+            Console.Write($"\t\t|    Account No: {sID}");
+            UIHelpers.PrintRemainSpace(new Cursor());
+            Console.Write($"\t\t|    First Name: {firstName}");
+            UIHelpers.PrintRemainSpace(new Cursor());
+            Console.Write($"\t\t|    Last Name: {lastName}");
+            UIHelpers.PrintRemainSpace(new Cursor());
+            Console.Write($"\t\t|    Address: {address}");
+            UIHelpers.PrintRemainSpace(new Cursor());
+            Console.Write($"\t\t|    Phone: {sPhone}");
+            UIHelpers.PrintRemainSpace(new Cursor());
+            Console.Write($"\t\t|    Email: {email}");
+            UIHelpers.PrintRemainSpace(new Cursor());
+            Console.Write($"\t\t|    Balance: {sBalance}");
+            UIHelpers.PrintRemainSpace(new Cursor());
+            Console.WriteLine("\t\t==================================================");
         }
     }
 }
