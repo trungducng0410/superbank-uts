@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 using SuperBank.utils;
 namespace SuperBank.model
 {
@@ -11,11 +12,12 @@ namespace SuperBank.model
         private string address;
         private int phone;
         private string email;
-        private double balance;
+        private int balance;
+        private List<Transaction> history;
 
         public Account() { }
 
-        public Account(string id, string firstName, string lastName, string address, string phone, string email, string balance)
+        public Account(string id, string firstName, string lastName, string address, string phone, string email, string balance, List<Transaction> history)
         {
             this.id = Convert.ToInt32(id);
             this.firstName = firstName;
@@ -23,7 +25,8 @@ namespace SuperBank.model
             this.address = address;
             this.phone = Convert.ToInt32(phone);
             this.email = email;
-            this.balance = Convert.ToDouble(balance);
+            this.balance = Convert.ToInt32(balance);
+            this.history = history;
         }
 
         public Account(string firstName, string lastName, string address, string phone, string email)
@@ -35,67 +38,18 @@ namespace SuperBank.model
             this.email = email;
         }
 
-        public string GetFirstName()
+        public Transaction Deposit(int amount)
         {
-            return firstName;
+            DateTime date = DateTime.Today;
+            string action = "DEPOSIT";
+            balance += amount;
+            Transaction newTrans = new Transaction(date, action, amount, balance);
+            history.Add(newTrans);
+            UpdateAccount();
+            return newTrans;
         }
 
-        public void SetFirstName(string firstName)
-        {
-            this.firstName = firstName;
-        }
-
-        public string GetLastName()
-        {
-            return lastName;
-        }
-
-        public void SetLastName(string lastName)
-        {
-            this.lastName = lastName;
-        }
-
-        public string GetAddress()
-        {
-            return address;
-        }
-
-        public void SetAddress(string address)
-        {
-            this.address = address;
-        }
-
-        public int GetPhone()
-        {
-            return phone;
-        }
-
-        public void SetPhone(int phone)
-        {
-            this.phone = phone;
-        }
-
-        public string GetEmail()
-        {
-            return email;
-        }
-
-        public void SetEmail(string email)
-        {
-            this.email = email;
-        }
-
-        public double GetBalance()
-        {
-            return balance;
-        }
-
-        public void SetBalance(double balance)
-        {
-            this.balance = balance;
-        }
-
-        public int SaveOnDisk()
+        public int SaveNewAccount()
         {
             Random rnd = new Random();
             int accountNumber = rnd.Next(100000, 99999999);
@@ -105,11 +59,11 @@ namespace SuperBank.model
 
                 if (File.Exists(path))
                 {
-                    SaveOnDisk();
+                    SaveNewAccount();
                 }
                 id = accountNumber;
-                balance = 0.0;
-                WriteToFile(path);
+                balance = 0;
+                WriteInformation(path);
             }
             catch (Exception e)
             {
@@ -119,7 +73,18 @@ namespace SuperBank.model
             return accountNumber;
         }
 
-        private void WriteToFile(string path)
+        public int UpdateAccount()
+        {
+            string path = FileHelpers.GetAccountFilePath(Convert.ToString(id));
+            if (File.Exists(path))
+            {
+                WriteInformation(path);
+                WriteHistory(path);
+            }
+            return id;
+        }
+
+        private void WriteInformation(string path)
         {
             try
             {
@@ -131,6 +96,33 @@ namespace SuperBank.model
                 streamwriter.WriteLine($"Phone|{phone}");
                 streamwriter.WriteLine($"Email|{email}");
                 streamwriter.WriteLine($"Balance|{balance}");
+                streamwriter.Close();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Fail to write to file");
+            }
+        }
+
+        private void WriteHistory(string path)
+        {
+            try
+            {
+                StreamWriter streamwriter = File.AppendText(path);
+                if (history.Count > 0)
+                {
+                    List<Transaction> tmp = history;
+                    if (history.Count > 5)
+                    {
+                        tmp = history.GetRange(history.Count - 5, 5);
+                    }
+
+                    foreach (Transaction trans in tmp)
+                    {
+                        string sDateTime = trans.date.ToString("d");
+                        streamwriter.WriteLine($"{sDateTime}|{trans.action}|{trans.amount}|{trans.remainAmount}");
+                    }
+                }
                 streamwriter.Close();
             }
             catch (Exception)

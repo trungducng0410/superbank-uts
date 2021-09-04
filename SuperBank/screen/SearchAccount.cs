@@ -29,6 +29,11 @@ namespace SuperBank.screen
             Console.WriteLine("\t\t==================================================\n\n");
             errorCursor = new Cursor();
 
+            GetInput();
+        }
+
+        private void GetInput()
+        {
             Console.SetCursorPosition(inputCuror.x, inputCuror.y);
             string accountNumber = Console.ReadLine();
             if (!int.TryParse(accountNumber, out _) || accountNumber.Length > 10)

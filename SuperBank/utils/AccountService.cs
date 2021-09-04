@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 using SuperBank.model;
 namespace SuperBank.utils
 {
@@ -20,6 +21,7 @@ namespace SuperBank.utils
                 string phone = "";
                 string email = "";
                 string balance = "";
+                List<Transaction> history = new List<Transaction>();
 
                 foreach (string line in accountInfo)
                 {
@@ -49,10 +51,18 @@ namespace SuperBank.utils
                         case "Balance":
                             balance = value;
                             break;
+                        default:
+                            string[] transArray = line.Split('|');
+                            string date = transArray[0];
+                            string action = transArray[1];
+                            string amount = transArray[2];
+                            string remainAmount = transArray[3];
+                            history.Add(new Transaction(date, action, amount, remainAmount));
+                            break;
                     }
                 }
 
-                return new Account(id, firstName, lastName, address, phone, email, balance);
+                return new Account(id, firstName, lastName, address, phone, email, balance, history);
             }
             catch (Exception)
             {

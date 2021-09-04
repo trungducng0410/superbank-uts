@@ -41,61 +41,43 @@ namespace SuperBank.screen
             if (firstNameInput != null)
             {
                 Console.Write(firstNameInput);
-                UIHelpers.PrintRemainSpace(new Cursor());
+                
             }
-            else
-            {
-                Console.WriteLine("\t\t\t\t |");
-            }
+            UIHelpers.PrintRemainSpace(new Cursor());
 
             Console.Write("\t\t|    Last Name: ");
             lastNameCursor = new Cursor();
             if (lastNameInput != null)
             {
                 Console.Write(lastNameInput);
-                UIHelpers.PrintRemainSpace(new Cursor());
+                
             }
-            else
-            {
-                Console.WriteLine("\t\t\t\t |");
-            }
-
+            UIHelpers.PrintRemainSpace(new Cursor());
 
             Console.Write("\t\t|    Address : ");
             addressCursor = new Cursor();
             if (addressInput != null)
             {
                 Console.Write(addressInput);
-                UIHelpers.PrintRemainSpace(new Cursor());
+                
             }
-            else
-            {
-                Console.WriteLine("\t\t\t\t\t |");
-            }
+            UIHelpers.PrintRemainSpace(new Cursor());
 
             Console.Write("\t\t|    Phone : ");
             phoneCursor = new Cursor();
             if (phoneInput != null)
             {
                 Console.Write(phoneInput);
-                UIHelpers.PrintRemainSpace(new Cursor());
             }
-            else
-            {
-                Console.WriteLine("\t\t\t\t\t |");
-            }
+            UIHelpers.PrintRemainSpace(new Cursor());
 
             Console.Write("\t\t|    Email : ");
             emailCursor = new Cursor();
             if (emailInput != null)
             {
                 Console.Write(emailInput);
-                UIHelpers.PrintRemainSpace(new Cursor());
             }
-            else
-            {
-                Console.WriteLine("\t\t\t\t\t |");
-            }
+            UIHelpers.PrintRemainSpace(new Cursor());
 
             Console.WriteLine("\t\t==================================================\n\n");
 
@@ -189,7 +171,7 @@ namespace SuperBank.screen
         private void SaveAccountToFile()
         {
             account = new Account(firstNameInput, lastNameInput, addressInput, phoneInput, emailInput);
-            int accountNumber = account.SaveOnDisk();
+            int accountNumber = account.SaveNewAccount();
             if (accountNumber != -1)
             {
                 Console.WriteLine("\nAccount Created! Details will be provided via email.\n");
